@@ -1,0 +1,280 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Love Unhinged</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fff0f5;
+      color: #4a0033;
+      margin: 0; padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      background: #c71585;
+      color: white;
+      padding: 1rem 2rem;
+      width: 100%;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 700;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    main {
+      max-width: 600px;
+      width: 90%;
+      margin: 1rem auto 3rem;
+      flex-grow: 1;
+    }
+    h2 {
+      text-align: center;
+      color: #9b0044;
+    }
+    .question {
+      margin: 2rem 0;
+    }
+    .question p {
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .answers {
+      margin-top: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    button.answer-btn {
+      background: #ffe4e1;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s;
+      box-shadow: 1px 1px 4px #d37ea7;
+    }
+    button.answer-btn:hover {
+      background: #ffb6c1;
+    }
+    #quiz-result {
+      margin-top: 1rem;
+      font-style: italic;
+      font-weight: 600;
+      text-align: center;
+      color: #70003c;
+    }
+    #bot-container {
+      margin-top: 3rem;
+      border-top: 2px solid #c71585;
+      padding-top: 1rem;
+    }
+    #chatlog {
+      background: #ffe4e1;
+      min-height: 150px;
+      max-height: 300px;
+      overflow-y: auto;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      white-space: pre-wrap;
+    }
+    #user-input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #c71585;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    #send-btn {
+      margin-top: 0.5rem;
+      width: 100%;
+      padding: 10px;
+      background: #c71585;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    #send-btn:hover {
+      background: #9b0044;
+    }
+    #confession-section {
+      margin-top: 3rem;
+      border-top: 2px solid #c71585;
+      padding-top: 1rem;
+    }
+    #confession-text {
+      width: 100%;
+      height: 80px;
+      border-radius: 8px;
+      border: 1px solid #c71585;
+      padding: 8px;
+      resize: vertical;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    #confess-btn {
+      margin-top: 0.5rem;
+      width: 100%;
+      padding: 10px;
+      background: #c71585;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    #confess-btn:hover {
+      background: #9b0044;
+    }
+    #confessions-list {
+      margin-top: 1rem;
+      font-style: italic;
+      max-height: 150px;
+      overflow-y: auto;
+      background: #fff0f5;
+      border-radius: 8px;
+      padding: 10px;
+      border: 1px solid #c71585;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem 0;
+      background: #c71585;
+      color: white;
+      width: 100%;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Love Unhinged by Joan Lutaaya <br />
+    <small>Powered by Goshen</small>
+  </header>
+  <main>
+    <section id="quiz-section">
+      <h2>Spicy Relationship Quiz</h2>
+      <div id="quiz-container"></div>
+      <div id="quiz-result"></div>
+    </section>
+
+    <section id="bot-container">
+      <h2>Ask DeluluBot Anything</h2>
+      <div id="chatlog"></div>
+      <input type="text" id="user-input" placeholder="Ask your twisted love questions..." />
+      <button id="send-btn">Send</button>
+    </section>
+
+    <section id="confession-section">
+      <h2>Anonymous Confessions</h2>
+      <textarea id="confession-text" placeholder="Spill the tea... what’s your wildest love secret?"></textarea>
+      <button id="confess-btn">Confess</button>
+      <div id="confessions-list"></div>
+    </section>
+  </main>
+  <footer>
+    &copy; 2025 Joan Lutaaya | Powered by Goshen
+  </footer>
+
+  <script>
+    // Quiz Data
+    const quizQuestions = [
+      {
+        q: "They forgot your birthday. What’s your move?",
+        answers: [
+          "Casually bring it up 3 months later... in a breakup text.",
+          "Forget theirs too. Justice.",
+          "Cry in silence, then bake them a cake.",
+          "Buy yourself something expensive and post it captioned 'Happy birthday to me. Again.'"
+        ]
+      },
+      {
+        q: "You find old love letters in their drawer. Do you…",
+        answers: [
+          "Read them dramatically like you’re in a telenovela.",
+          "Add your own love letter titled 'Better than your ex.'",
+          "Burn them. With sage. For cleansing.",
+          "Ask them if their ex was taller."
+        ]
+      },
+      {
+        q: "They ghost you for 3 days. Your response?",
+        answers: [
+          "Start planning your Oscar-worthy dramatic return.",
+          "Ghost them back but add a savage meme.",
+          "Text them 'Hope you’re not allergic to commitment.'",
+          "Move on and post ‘Found someone better.’"
+        ]
+      },
+      {
+        q: "You catch them liking their ex’s pic. You…",
+        answers: [
+          "Screenshot and save for the court of social media.",
+          "Reply with 'Did you like my post by mistake?'",
+          "Laugh it off and secretly plan revenge.",
+          "Unfollow, block, and move on like a boss."
+        ]
+      }
+    ];
+
+    const quizContainer = document.getElementById('quiz-container');
+    const quizResult = document.getElementById('quiz-result');
+
+    function loadQuiz() {
+      quizContainer.innerHTML = '';
+      quizQuestions.forEach((item, idx) => {
+        const qDiv = document.createElement('div');
+        qDiv.classList.add('question');
+        const questionP = document.createElement('p');
+        questionP.textContent = item.q;
+        qDiv.appendChild(questionP);
+
+        const answersDiv = document.createElement('div');
+        answersDiv.classList.add('answers');
+
+        item.answers.forEach(answer => {
+          const btn = document.createElement('button');
+          btn.classList.add('answer-btn');
+          btn.textContent = answer;
+          btn.addEventListener('click', () => {
+            quizResult.textContent = `You chose: "${answer}" - Savage choice!`;
+          });
+          answersDiv.appendChild(btn);
+        });
+
+        qDiv.appendChild(answersDiv);
+        quizContainer.appendChild(qDiv);
+      });
+    }
+
+    loadQuiz();
+
+    // DeluluBot simulation
+
+    const chatlog = document.getElementById('chatlog');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+
+    // Some savage, funny bot replies
+    const botReplies = [
+      "Honey, love isn’t for the faint-hearted. Spill more tea.",
+      "Darling, if they ghost you, they’re just scared of the glow up.",
+      "I see you. Next move: revenge or ice cream?",
+      "Drama? Bring it on. But remember, self-love first.",
+      "Ghosting is their loss. Your glow-up is coming.",
+      "Trust me, the next one will love you better (or not).",
+      "DeluluBot says: Swipe left on
+
